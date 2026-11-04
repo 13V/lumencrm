@@ -88,10 +88,9 @@ await check('all public tables enable RLS',async()=>{
   assert.equal(await value("select count(*)::int from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and not c.relrowsecurity"),0);
 });
 await actAs(owner,'aal1');
-await check('owner at AAL1 can identify profile but cannot read settings',async()=>{
+await check('owner signed in by email link (AAL1) has owner access',async()=>{
   assert.equal(await value('select count(*)::int from public.get_my_profile()'),1);
-  assert.equal(await value('select count(*)::int from public.settings'),0);
-  await reject('select public.create_lead($1::jsonb)',[JSON.stringify({name:'Test',email:'test@example.com'})]);
+  assert.equal(await value('select count(*)::int from public.settings'),1);
 });
 await actAs(owner);
 let lead;

@@ -17,7 +17,7 @@ The private sales and client system for Lumen adl, built for Troy Watson in Adel
    values ('REPLACE-WITH-AUTH-USER-UUID', 'Troy Watson', 'owner');
    ```
 
-   There is no automatic first-user promotion. Sign in at `/login`, enrol an authenticator and verify its code. Owner CRM access requires AAL2 at both the application and database.
+   There is no automatic first-user promotion. Sign in at `/login` with the emailed link. Sign-in is by email link only (no authenticator app, Troy's decision on 4 Nov 2026) and a session lasts 30 days from the last visit. The former AAL2 requirement, enforced at both the application and database.
 7. Run `pnpm dev` and open http://127.0.0.1:3000. Set `APP_URL=http://127.0.0.1:3000` locally so origin checks match.
 
 For an isolated fictional preview, set `LUMEN_DEMO_MODE=true` locally. No Supabase connection is needed; the preview is labelled and its browser data is separate from the database. Production ignores this flag. Use a separate test Supabase project for integration acceptance tests; do not seed production.

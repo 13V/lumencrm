@@ -12,7 +12,8 @@ export async function serverClient() {
   if (!configured()) throw new Error('Supabase is not configured. Set the variables in .env.example.');
   const jar = await cookies();
   return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-    cookieOptions: { sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/' },
+    // Stay signed in for 30 days from the last visit.
+    cookieOptions: { sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/', maxAge: 60 * 60 * 24 * 30 },
     cookies: {
       getAll: () => jar.getAll(),
       setAll(values) {

@@ -2,8 +2,8 @@
 
 ## Before real data
 
-- [ ] Apply every migration to a separate Sydney Supabase test project, then run database policy tests as owner AAL1, owner AAL2, staff, viewer and anonymous roles.
-- [ ] Verify no public signup can create a profile; provision the first owner and complete TOTP enrolment and recovery planning.
+- [ ] Apply every migration to a separate Sydney Supabase test project, then run database policy tests as owner (email-link session), staff, viewer and anonymous roles.
+- [ ] Verify no public signup can create a profile; provision the first owner. Done 4 Nov 2026: hello@lumenadl.com, email-link sign-in only (no TOTP, Troy's choice), 30-day sessions.
 - [ ] Apply the shipped Invite user and Magic Link email templates in hosted Supabase. Test invitation acceptance on a different device and owner sign-in followed by TOTP.
 - [ ] Set Vercel `syd1`, the CRM domain, exact Auth redirect URLs and independent random ingest, cron and export secrets.
 - [ ] Confirm no real `.env` files or provider keys appear in Git history or browser bundles.
@@ -23,7 +23,7 @@
 - [ ] Public quote exposes only the quote, accepts once with name/time/IP/user agent, creates the project/checklist and optional deposit draft, and notifies the owner.
 - [ ] Record a partial invoice payment, then settle it. Confirm computed overdue status and owner-only access.
 - [ ] Reports show `$100` per enquiry and `none yet ($300 spent)` per customer for three enquiries and no wins.
-- [ ] Staff cannot bypass the interface to read invoices/settings, export, delete or change roles. Viewer cannot write. Owner AAL1 cannot read client records.
+- [ ] Staff cannot bypass the interface to read invoices/settings, export, delete or change roles. Viewer cannot write.
 - [ ] Enable CAPI in a test dataset; one milestone queues one stable event; disabling it prevents delivery. Verify current Meta event-age and conversion-leads setup requirements.
 - [ ] Verify scheduler authentication, overlap protection, Adelaide digest time, call reminders and retry behaviour. Confirm Vercel plan frequency; use pg_cron/pg_net if needed.
 - [ ] Test iPhone home-screen install and web push, plus read-only offline behaviour and logout cache clearing.

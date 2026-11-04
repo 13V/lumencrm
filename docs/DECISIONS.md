@@ -3,7 +3,8 @@
 - This is a repository application for Supabase and Vercel, as requested; it is not hosted through Sites.
 - No existing client records were present. Development preview data is explicitly fictional and isolated from Supabase. Production cannot enable preview mode.
 - Staff can read the operational price list and selected working-hour settings through an allowlisted function, while bank details and the full settings row remain owner-only.
-- Owner TOTP is enforced by both the application and database policies. Membership is provisioned explicitly; a stranger cannot become owner by signing in first.
+- 4 Nov 2026 (Troy): sign-in is by email link only, with no authenticator app, and sessions last 30 days from the last visit (migration 011). This replaces the original owner TOTP rule below. The CRM's security now rests on the hello@lumenadl.com mailbox, so that mailbox should keep its own two-step verification.
+- (Superseded) Owner TOTP is enforced by both the application and database policies. Membership is provisioned explicitly; a stranger cannot become owner by signing in first.
 - Some supplied dark-mode muted colours do not meet normal-text AA on all supplied surfaces. Muted text is lightened while keeping the requested neutral palette.
 - Auth pages, manifest and service-worker assets necessarily remain reachable before login; CRM data routes require authentication. Capability URLs and signed integration routes have their separate access checks.
 - A PostgreSQL database is required for live transaction and RLS checks. Unit and preview-browser tests are not represented as proof of live database behaviour.

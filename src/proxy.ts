@@ -23,7 +23,7 @@ export async function proxy(request: NextRequest) {
         setAll(values) {
           values.forEach(({ name, value }) => request.cookies.set(name, value));
           response = NextResponse.next({ request: { headers } });
-          values.forEach(({ name, value, options }) => response.cookies.set(name, value, { ...options, sameSite: 'lax', secure: !isDev }));
+          values.forEach(({ name, value, options }) => response.cookies.set(name, value, { ...options, sameSite: 'lax', secure: !isDev, maxAge: options?.maxAge === 0 ? 0 : 60 * 60 * 24 * 30 }));
         },
       },
     });

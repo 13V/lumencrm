@@ -5,17 +5,15 @@ import type { Role } from '@/lib/types';
 export class HttpError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
-export async function requireSession(roles: Role[] = ['owner', 'staff', 'viewer'], allowAal1 = false) {
+// Sign-in is by email link only (Troy, 4 Nov 2026): no authenticator step for any role.
+// The second parameter is kept so existing callers still compile.
+export async function requireSession(roles: Role[] = ['owner', 'staff', 'viewer'], _allowAal1 = false) {
   const db = await serverClient();
   const { data: { user }, error } = await db.auth.getUser();
   if (error || !user) throw new HttpError(401, 'Sign in to continue.');
   const result = await db.rpc('get_my_profile');
   const profile = Array.isArray(result.data) ? result.data[0] : result.data;
   if (result.error || !profile || !roles.includes(profile.role)) throw new HttpError(403, 'Your account does not have access to this action.');
-  if (profile.role === 'owner' && !allowAal1) {
-    const { data } = await db.auth.mfa.getAuthenticatorAssuranceLevel();
-    if (data?.currentLevel !== 'aal2') throw new HttpError(428, 'Verify your authenticator code to continue.');
-  }
   return { db, user, profile: profile as { id: string; user_id: string; name: string; role: Role } };
 }
 export function requireSameOrigin(request: Request) {
