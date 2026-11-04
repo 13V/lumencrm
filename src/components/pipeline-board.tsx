@@ -17,13 +17,13 @@ function DealCard({deal,data,demo,disabled,onMove,stages}:Props&{deal:Deal;stage
   return <article ref={setNodeRef} style={transform?{transform:`translate3d(${transform.x}px,${transform.y}px,0)`,zIndex:100}:undefined} className={`kanban-card ${isDragging?'is-dragging':''}`}>
     <div className="kanban-card-title"><h3><Link className="kanban-name" href={`/leads/${deal.id}${demo?'?demo=1':''}`}>{name}</Link></h3><button className="drag-handle" aria-label={`Drag ${name} to another stage`} {...attributes} {...listeners} disabled={disabled}><GripVertical size={16}/></button></div>
     <p>{business?.name}</p>{!deal.next_step&&<div className="next-warning"><CircleDot size={11}/>No next step</div>}
-    <footer><span>{deal.value_once?money(deal.value_once):'Value not set'}</span><select aria-label={`Stage for ${name}`} value={deal.stage_key} disabled={disabled} onChange={e=>onMove(deal.id,e.target.value)}>{stages.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}</select></footer>
+    <footer><span className={deal.value_once?undefined:'no-value'}>{deal.value_once?money(deal.value_once):'Value not set'}</span><select aria-label={`Stage for ${name}`} data-stage={deal.stage_key} value={deal.stage_key} disabled={disabled} onChange={e=>onMove(deal.id,e.target.value)}>{stages.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}</select></footer>
   </article>;
 }
 
 function Column({stage,children,count}: {stage:{key:string;label:string};children:React.ReactNode;count:number}) {
   const {setNodeRef,isOver}=useDroppable({id:stage.key});
-  return <section ref={setNodeRef} className={`kanban-column ${isOver?'drop-target':''}`} aria-label={`${stage.label} stage`}><div className="kanban-column-header"><span className={`dot ${stage.key==='won'?'won-dot':''}`}/>{stage.label}<span className="count">{count}</span></div>{children}{!count&&<div className="kanban-empty">No deals here yet</div>}</section>;
+  return <section ref={setNodeRef} className={`kanban-column ${isOver?'drop-target':''}`} data-stage={stage.key} aria-label={`${stage.label} stage`}><div className="kanban-column-header"><span className={`dot ${stage.key==='won'?'won-dot':''}`}/>{stage.label}<span className="count">{count}</span></div>{children}{!count&&<div className="kanban-empty">No deals here yet</div>}</section>;
 }
 
 export function PipelineBoard(props:Props) {
@@ -35,5 +35,5 @@ export function PipelineBoard(props:Props) {
     const deal=props.data.deals.find(d=>d.id===active.id),stage=stages.find(s=>s.key===over.id);
     if(deal&&stage&&deal.stage_key!==stage.key){props.onMove(deal.id,stage.key);setAnnouncement(`Moved to ${stage.label}.`);}
   }
-  return <><p className="board-hint">Drag a card by its handle, or use its stage menu.</p><span className="sr-only" aria-live="polite">{announcement}</span><DndContext sensors={sensors} collisionDetection={pointerWithin} onDragEnd={onDragEnd}><div className="kanban">{stages.map(stage=>{const deals=props.data.deals.filter(d=>d.stage_key===stage.key&&(d.outcome==='open'||stage.key==='won'&&d.outcome==='won'));return <Column stage={stage} key={stage.key} count={deals.length}>{deals.map(deal=><DealCard key={deal.id} {...props} deal={deal} stages={stages}/>)}</Column>;})}</div></DndContext></>;
+  return <><p className="board-hint">Drag a card by its handle, or use its stage menu.</p><span className="sr-only" aria-live="polite">{announcement}</span><DndContext id="pipeline-board" sensors={sensors} collisionDetection={pointerWithin} onDragEnd={onDragEnd}><div className="kanban">{stages.map(stage=>{const deals=props.data.deals.filter(d=>d.stage_key===stage.key&&(d.outcome==='open'||stage.key==='won'&&d.outcome==='won'));return <Column stage={stage} key={stage.key} count={deals.length}>{deals.map(deal=><DealCard key={deal.id} {...props} deal={deal} stages={stages}/>)}</Column>;})}</div></DndContext></>;
 }
