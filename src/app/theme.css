@@ -458,3 +458,52 @@ select[data-stage], select[data-outcome]:not([data-outcome=open]) {
 @media (prefers-reduced-motion: reduce) {
   .button, .lead-card, .kanban-card { transition: none; }
 }
+
+/* ---------- Navigation feedback ---------- */
+
+/* A small pulsing dot on the clicked tab while a page loads from the server. */
+.nav-item { position: relative; }
+.nav-pending { position: absolute; left: 6px; top: calc(50% - 3px); width: 6px; height: 6px; border-radius: 50%; background: transparent; }
+.nav-pending.is-pending { background: var(--accent); animation: nav-pulse .9s ease-in-out infinite; }
+@keyframes nav-pulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .nav-pending.is-pending { animation: none; } }
+
+/* ---------- Pipeline: the full width, every stage on screen ---------- */
+
+.main-content.pipeline-content { max-width: none; }
+@media (min-width: 801px) {
+  .pipeline-content .kanban {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(124px, 1fr);
+    gap: 10px; overflow-x: auto; padding-bottom: 8px;
+  }
+  .pipeline-content .kanban-column { width: auto; min-width: 0; padding: 8px; }
+  .pipeline-content .kanban-column-header { gap: 6px; padding: 4px 4px 10px; font-size: 13.5px; flex-wrap: wrap; }
+  .pipeline-content .kanban-card { padding: 12px; }
+  .pipeline-content .kanban-card h3 { font-size: 15px; }
+  .pipeline-content .kanban-card p { font-size: 13px; margin: 2px 0 10px; }
+  .pipeline-content .kanban-card footer { flex-direction: column; align-items: stretch; gap: 8px; }
+  .pipeline-content .kanban-card select { width: 100%; }
+  .pipeline-content .kanban-empty { font-size: 12.5px; }
+}
+
+/* Narrow pipeline columns (smaller laptops): tighter cards so stage names and menus still fit. */
+@media (min-width: 801px) {
+  .pipeline-content .kanban { gap: 8px; }
+  .pipeline-content .kanban-column { container-type: inline-size; }
+  @container (max-width: 165px) {
+    .pipeline-content .kanban-column-header { font-size: 12.5px; gap: 4px; padding: 2px 2px 8px; flex-wrap: nowrap; }
+    .pipeline-content .kanban-column-header > .dot, .pipeline-content .kanban-column-header > .won-dot { display: none; }
+    .pipeline-content .kanban-card { padding: 10px; }
+    .pipeline-content .kanban-card h3 { font-size: 14px; }
+    .pipeline-content .kanban-card p { font-size: 12.5px; }
+    .pipeline-content .kanban-card .next-warning { font-size: 12px; }
+    .pipeline-content .kanban-card footer > span { font-size: 13px; }
+    .pipeline-content .kanban-card select { font-size: 12px; padding: 6px 2px 6px 8px; min-height: 36px; }
+  }
+}
+@media (min-width: 801px) and (max-width: 1700px) {
+  .pipeline-content .kanban-column { padding: 6px; }
+}
+@container (max-width: 165px) {
+  .pipeline-content .kanban-card { padding: 9px 8px; }
+}
