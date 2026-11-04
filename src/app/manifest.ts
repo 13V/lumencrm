@@ -1,0 +1,2 @@
+import type { MetadataRoute } from 'next';
+export default function manifest(): MetadataRoute.Manifest { return { name: 'Lumen CRM', short_name: 'Lumen', description: 'Your next step, in one place.', start_url: '/today', display: 'standalone', background_color: '#F4F4F1', theme_color: '#111110', icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] }; }

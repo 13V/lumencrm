@@ -1,0 +1,1 @@
+export default function Loading() { return <main className="loading-shell" aria-label="Loading"><div className="skeleton skeleton-title" />{[1,2,3].map(i => <div className="skeleton skeleton-card" key={i} />)}</main>; }
